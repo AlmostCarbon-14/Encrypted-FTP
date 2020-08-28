@@ -23,6 +23,9 @@ class FileCrypt:
                                                                                 
     def __load_key(self):
         return open("key" + self.salt + ".ky", "rb").read()
+    
+    def key(self):
+        return self.__load_key()
 
     def encrypt_file(self, filename): 
         f = Fernet(self.__load_key())

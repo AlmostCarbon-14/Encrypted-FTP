@@ -43,7 +43,8 @@ class E_FTP_S:
         sock.connect((self.addr, self.port))
         sock.send(f"{self.key}{self.seperator}{self.filename}{self.seperator}{self.file_size}".encode())
         progress = tqdm.tqdm(range(self.file_size), f"Sending {self.filename}", unit="B", unit_scale=True, unit_divisor=1024)
-        self.e_file.encrypt_file(self.filename)
+        os.system("cp " + self.filename + " " + self.filename + "-copy")
+        self.e_file.encrypt_file(self.filename + "-copy")
         with open(self.filename, "rb") as f:
             for _ in progress:
                 bytes_read = f.read(self.buff_size)
@@ -52,5 +53,6 @@ class E_FTP_S:
                 sock.sendall(bytes_read)
                 progress.update(len(bytes_read))
         sock.close()
+        os.system("rm " + self.filename + "-copy")
 
 server_obj = E_FTP_S()
