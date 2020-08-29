@@ -11,7 +11,7 @@ PORT = input("Please Enter a Port Number: \n")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-sock.bind(('', int(PORT))
+sock.bind(('', int(PORT)))
 sock.listen(5)
 
 client_socket, addr = sock.accept()
