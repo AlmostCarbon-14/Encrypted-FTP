@@ -7,9 +7,11 @@ from e_file import FileCrypt
 
 SEPERATOR = "<SEPERATOR>"
 BUFF_SIZE = 4096
+PORT = input("Please Enter a Port Number: \n")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.bind(('', 2222))
+
+sock.bind(('', int(PORT))
 sock.listen(5)
 
 client_socket, addr = sock.accept()

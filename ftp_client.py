@@ -10,7 +10,7 @@ from e_file import FileCrypt
 class E_FTP_S:
     def __init__(self):
         self.addr = self.get_addr()
-        self.port = 2222
+        self.port = self.get_port()
         self.filename = input("Please Enter Filename:\n")
         self.buff_size = 4096
         self.seperator = "<SEPERATOR>"
@@ -22,6 +22,9 @@ class E_FTP_S:
         self.file_size = os.path.getsize(self.filename)
         
         self.connect()
+
+    def get_port(self):
+        return int(input("Please Enter a Port Number: \n"))
 
     def get_addr(self):
         pattern = '[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}'
