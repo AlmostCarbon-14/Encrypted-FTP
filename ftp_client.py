@@ -39,7 +39,7 @@ class E_FTP_S:
 
 
     def connect(self):
-        sock = socket.socket()
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((self.addr, self.port))
         sock.send(f"{self.key}{self.seperator}{self.filename}{self.seperator}{self.file_size}".encode())
         progress = tqdm.tqdm(range(self.file_size), f"Sending {self.filename}", unit="B", unit_scale=True, unit_divisor=1024)

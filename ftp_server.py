@@ -8,7 +8,7 @@ from e_file import FileCrypt
 SEPERATOR = "<SEPERATOR>"
 BUFF_SIZE = 4096
 
-sock = socket.socket()
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.bind(('', 2222))
 sock.listen(5)
 
