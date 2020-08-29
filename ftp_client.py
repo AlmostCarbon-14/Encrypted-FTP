@@ -29,6 +29,7 @@ class E_FTP_S:
             print("Your port value must be in this range (1024, 65535)")
             sys.exit()
         return port
+
     def get_addr(self):
         pattern = '[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}'
         addr = input("Please Enter Destination Address:\n")
@@ -60,13 +61,13 @@ class E_FTP_S:
             with open(self.filename + "-copy", "rb") as f:
                 for _ in progress:
                     bytes_read = f.read(self.buff_size)
-                    print("Bytes: \n", bytes_read)
                     if not bytes_read:
                         break
                     sock.sendall(bytes_read)
                     progress.update(len(bytes_read))
         except:
             print("Error Reading/Sending file")    
+        print(f"\"{self.filename}\" Has Completed Sending...Goodbye")
         self.finish(sock)
 
     def finish(self, sock):

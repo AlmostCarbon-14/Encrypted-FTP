@@ -24,8 +24,6 @@ name = os.path.basename(name)
 
 size = int(size)
 
-print("Received: ", key, name, size)
-
 progress = tqdm.tqdm(range(size), f"Receiving {name}", unit="B", unit_scale=True, unit_divisor=1024)
 with open(name, "wb") as f:
     for _ in progress:
@@ -34,6 +32,6 @@ with open(name, "wb") as f:
             break
         f.write(bytes_read)
         progress.update(len(bytes_read))
-
+    print(f"{name} Has Finished Downloading and has been saved in this directory")
     client_socket.close()
     sock.close()
