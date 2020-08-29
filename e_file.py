@@ -43,3 +43,11 @@ class FileCrypt:
             data = f.decrypt(e_data)
         with open(filename, "wb") as file:
             file.write(data)
+    
+    def decrypt_with_key(self, filename, key):
+        f = Fernet(key)
+        with open(filename, "rb") as file:
+            e_data = file.read()
+            data = f.decrypt(e_data)
+        with open(filename, "wb") as file:
+            file.write(data)
