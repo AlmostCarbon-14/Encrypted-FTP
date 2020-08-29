@@ -10,7 +10,7 @@ from e_file import FileCrypt
 class E_FTP_S:
     def __init__(self):
         self.addr = self.get_addr()
-        self.port = 6069
+        self.port = 2222
         self.filename = input("Please Enter Filename:\n")
         self.buff_size = 4096
         self.seperator = "<SEPERATOR>"
@@ -45,19 +45,27 @@ class E_FTP_S:
             sock.send(f"{self.key}{self.seperator}{self.filename}{self.seperator}{self.file_size}".encode())
         except:
             print("Failure to connect to host")
+            finish()
         progress = tqdm.tqdm(range(self.file_size), f"Sending {self.filename}", unit="B", unit_scale=True, unit_divisor=1024)
         os.system("cp " + self.filename + " " + self.filename + "-copy")
         self.e_file.encrypt_file(self.filename + "-copy")
-        with open(self.filename, "rb") as f:
-            for _ in progress:
-                bytes_read = f.read(self.buff_size)
-                if not bytes_read:
-                    break
-                sock.sendall(bytes_read)
-                progress.update(len(bytes_read))
-        finally:
-            sock.close()
-            os.remove(self.filename + "-copy")
-            self.e_file.cleanup()
+        try:
+            with open(self.filename, "rb") as f:
+                for _ in progress:
+                    bytes_read = f.read(self.buff_size)
+                    if not bytes_read:
+                        break
+                    sock.sendall(bytes_read)
+                    progress.update(len(bytes_read))
+        except:
+            print("Error Reading/Sending file")    
+        finish(sock)
+
+
+
+    def finish(self, sock):
+        sock.close()
+        os.remove(self.filename + "-copy")
+        self.e_file.cleanup()
 
 server_obj = E_FTP_S()
