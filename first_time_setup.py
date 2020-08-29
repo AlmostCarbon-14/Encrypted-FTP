@@ -4,12 +4,8 @@ import os
 import time
 import sys
 
-try:
-    os.rename('/etc/foo', '/etc/bar')
-except IOError as e:
-    if (e[0] == errno.EPERM):
-        sys.exit("Please Make Sure You're a Superuser Before Running This Program")
-
+if os.geteuid() != 0:
+    sys.exit("Please Make Sure You're a Superuser Before Running This Program")    
 try:
     import tqdm
 except:
@@ -25,3 +21,7 @@ except:
             sys.exit()
     else:
         print("Everything has installed properly, happy file sharing!")
+
+print("You've got everything you need, happy sharing!")
+
+os.remove(sys.argv[0])
