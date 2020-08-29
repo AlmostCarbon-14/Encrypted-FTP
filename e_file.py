@@ -35,7 +35,10 @@ class FileCrypt:
             file.close()
         with open(filename, "wb") as file:
             file.write(e_data)
-                                                                                    
+                           
+    def cleanup(self):
+        os.delete("key" + self.salt + ".ky")
+
     def decrypt_file(self, filename):
         f = Fernet(self.__load_key())
         with open(filename, "rb") as file:

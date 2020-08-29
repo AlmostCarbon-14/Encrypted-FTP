@@ -53,6 +53,7 @@ class E_FTP_S:
                 sock.sendall(bytes_read)
                 progress.update(len(bytes_read))
         sock.close()
-        os.system("rm " + self.filename + "-copy")
+        os.remove(self.filename + "-copy")
+        self.e_file.cleanup()
 
 server_obj = E_FTP_S()
