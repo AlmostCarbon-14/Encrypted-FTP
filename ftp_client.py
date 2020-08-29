@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import socket
+import time
 import tqdm
 import os
 import sys
@@ -23,8 +24,11 @@ class E_FTP_S:
         self.connect()
 
     def get_port(self):
-        return int(input("Please Enter a Port Number: \n"))
-
+        port = int(input("Please Enter a Port Number: \n"))
+        if port <= 1024 or port >= 65535:
+            print("Your port value must be in this range (1024, 65535)")
+            sys.exit()
+        return port
     def get_addr(self):
         pattern = '[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}'
         addr = input("Please Enter Destination Address:\n")
@@ -50,11 +54,10 @@ class E_FTP_S:
             self.finish()
         progress = tqdm.tqdm(range(self.file_size), f"Sending {self.filename}", unit="B", unit_scale=True, unit_divisor=1024)
         os.system("cp " + self.filename + " " + self.filename + "-copy")
+        time.sleep(2)
         self.e_file.encrypt_file(self.filename + "-copy")
-        print("Unencrypted File: \n", self.print_file(self.filename))
-        print("Encrypted File: \n", self.print_file(self.filename + "-copy"))
         try:
-            with open(self.filename, "rb") as f:
+            with open(self.filename + "-copy", "rb") as f:
                 for _ in progress:
                     bytes_read = f.read(self.buff_size)
                     print("Bytes: \n", bytes_read)
@@ -65,11 +68,6 @@ class E_FTP_S:
         except:
             print("Error Reading/Sending file")    
         self.finish(sock)
-
-    def print_file(self, filename):
-        with open(filename, "rb") as f:
-            print("File Contents: \n", f.read(self.buff_size))
-            f.close()
 
     def finish(self, sock):
         sock.close()
