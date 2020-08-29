@@ -20,7 +20,6 @@ class E_FTP_S:
             print("No such file exists")
             sys.exit()
         self.file_size = os.path.getsize(self.filename)
-        
         self.connect()
 
     def get_port(self):
@@ -48,23 +47,29 @@ class E_FTP_S:
             sock.send(f"{self.key}{self.seperator}{self.filename}{self.seperator}{self.file_size}".encode())
         except:
             print("Failure to connect to host")
-            finish()
+            self.finish()
         progress = tqdm.tqdm(range(self.file_size), f"Sending {self.filename}", unit="B", unit_scale=True, unit_divisor=1024)
         os.system("cp " + self.filename + " " + self.filename + "-copy")
         self.e_file.encrypt_file(self.filename + "-copy")
+        print("Unencrypted File: \n", self.print_file(self.filename))
+        print("Encrypted File: \n", self.print_file(self.filename + "-copy"))
         try:
             with open(self.filename, "rb") as f:
                 for _ in progress:
                     bytes_read = f.read(self.buff_size)
+                    print("Bytes: \n", bytes_read)
                     if not bytes_read:
                         break
                     sock.sendall(bytes_read)
                     progress.update(len(bytes_read))
         except:
             print("Error Reading/Sending file")    
-        finish(sock)
+        self.finish(sock)
 
-
+    def print_file(self, filename):
+        with open(filename, "rb") as f:
+            print("File Contents: \n", f.read(self.buff_size))
+            f.close()
 
     def finish(self, sock):
         sock.close()

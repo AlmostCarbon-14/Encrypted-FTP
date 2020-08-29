@@ -27,7 +27,7 @@ size = int(size)
 print("Received: ", key, name, size)
 
 progress = tqdm.tqdm(range(size), f"Receiving {name}", unit="B", unit_scale=True, unit_divisor=1024)
-with open(name, "ab") as f:
+with open(name, "wb") as f:
     for _ in progress:
         bytes_read = client_socket.recv(BUFF_SIZE)
         if not bytes_read:    
