@@ -41,7 +41,10 @@ class E_FTP_S:
     def connect(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((self.addr, self.port))
-        sock.send(f"{self.key}{self.seperator}{self.filename}{self.seperator}{self.file_size}".encode())
+        try:
+            sock.send(f"{self.key}{self.seperator}{self.filename}{self.seperator}{self.file_size}".encode())
+        except:
+            print("Failure to connect to host")
         progress = tqdm.tqdm(range(self.file_size), f"Sending {self.filename}", unit="B", unit_scale=True, unit_divisor=1024)
         os.system("cp " + self.filename + " " + self.filename + "-copy")
         self.e_file.encrypt_file(self.filename + "-copy")
@@ -52,8 +55,9 @@ class E_FTP_S:
                     break
                 sock.sendall(bytes_read)
                 progress.update(len(bytes_read))
-        sock.close()
-        os.remove(self.filename + "-copy")
-        self.e_file.cleanup()
+        finally:
+            sock.close()
+            os.remove(self.filename + "-copy")
+            self.e_file.cleanup()
 
 server_obj = E_FTP_S()
