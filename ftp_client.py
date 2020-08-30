@@ -4,6 +4,7 @@ import time
 import tqdm
 import os
 import sys
+import shutil as sh
 import re
 from e_file import FileCrypt
 
@@ -54,7 +55,8 @@ class E_FTP_S:
             print("Failure to connect to host")
             self.finish()
         progress = tqdm.tqdm(range(self.file_size), f"Sending {self.filename}", unit="B", unit_scale=True, unit_divisor=1024)
-        os.system("cp " + self.filename + " " + self.filename + "-copy")
+        sh.copyfile(self.filename, self.filename + "-copy")
+        #os.system("cp " + self.filename + " " + self.filename + "-copy")
         time.sleep(2)
         self.e_file.encrypt_file(self.filename + "-copy")
         try:

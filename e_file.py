@@ -3,6 +3,7 @@
 
 from cryptography.fernet import Fernet
 import time
+import re
 import random
 import string
 import os
@@ -38,7 +39,7 @@ class FileCrypt:
             file.write(e_data)
                            
     def cleanup(self):
-        os.system("rm key*")
+        os.remove("key" + salt + ".ky")
 
     def decrypt_file(self, filename):
         f = Fernet(self.__load_key())
