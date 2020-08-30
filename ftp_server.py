@@ -3,12 +3,17 @@ import socket
 import tqdm
 import os
 import time
+import sys
 from e_file import FileCrypt
 
 
 SEPERATOR = "<SEPERATOR>"
 BUFF_SIZE = 4096
-PORT = input("Please Enter a Port Number: \n")
+args = sys.argv
+if "-p" in args:
+    PORT = port_scan()
+else:
+    PORT = input("Please Enter a Port Number: \n")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
