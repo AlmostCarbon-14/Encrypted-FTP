@@ -15,7 +15,7 @@ except:
             flag = True
     except:
         pass
-    if flag == True
+    if flag == True:
         print("There's been an error installing a necessary package for this client to work, attempting to update apt-get in 10 seconds...")
         time.sleep(10)
         os.system("sudo apt-get update -y")
