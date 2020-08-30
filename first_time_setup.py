@@ -11,10 +11,9 @@ try:
     import tqdm
 except:
     try:
-        if sp.call(['pip3','install','tdqm']) == 1:
-            flag = True
+        sp.call(['pip3','install','tdqm']) == 1:
     except:
-        pass
+        flag = True
     if flag == True:
         print("There's been an error installing a necessary package for this client to work, attempting to update apt-get in 10 seconds...")
         time.sleep(10)
