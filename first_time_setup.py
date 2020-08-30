@@ -12,7 +12,7 @@ try:
 except:
     if 'error' in sp.check_output(['pip3','install','tdqm']):
         flag = True
-    if ret != 0:
+    else:
         print("There's been an error installing a necessary package for this client to work, attempting to update apt-get in 10 seconds...")
         time.sleep(10)
         os.system("sudo apt-get update -y")
@@ -27,4 +27,4 @@ except:
             print("Everything has installed properly, happy file sharing!")
 
 print("You've got everything you need, happy sharing!")
-os.remove(sys.argv[0])
+#os.remove(sys.argv[0])
