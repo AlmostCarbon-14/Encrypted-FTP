@@ -2,6 +2,7 @@
 import socket
 import tqdm
 import os
+import time
 from e_file import FileCrypt
 
 
@@ -37,3 +38,4 @@ print("Key: " + key)
 print("Key Type: " + type(key))
 e_file = FileCrypt(False)
 e_file.decrypt_with_key(name, key)
+time.sleep(5)

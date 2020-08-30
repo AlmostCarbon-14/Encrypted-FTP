@@ -73,6 +73,7 @@ class E_FTP_S:
             print("Error Reading/Sending file")    
         print(f"\"{self.filename}\" Has Completed Sending...Goodbye")
         self.finish(sock)
+        time.sleep(5)
 
     def finish(self, sock):
         sock.close()
