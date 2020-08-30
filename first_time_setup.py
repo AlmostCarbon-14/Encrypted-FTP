@@ -11,7 +11,7 @@ try:
     import tqdm
 except:
     try:
-        sp.call(['pip3','install','tdqm']) == 1:
+        sp.call(['pip3','install','tdqm']) 
     except:
         flag = True
     if flag == True:
