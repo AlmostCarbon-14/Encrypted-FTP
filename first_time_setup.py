@@ -27,6 +27,6 @@ except:
             sys.exit()
         else:
             print("Everything has installed properly, happy file sharing!")
-
-print("You've got everything you need, happy sharing!")
-#os.remove(sys.argv[0])
+else:
+    print("You've got everything you need, happy sharing!")
+    os.remove(sys.argv[0])
