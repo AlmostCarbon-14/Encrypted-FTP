@@ -15,14 +15,11 @@ sock.bind(('', int(PORT)))
 sock.listen(5)
 
 client_socket, addr = sock.accept()
-
 recv = client_socket.recv(BUFF_SIZE).decode()
-
 key, name, size = recv.split(SEPERATOR)
-
 name = os.path.basename(name)
-
 size = int(size)
+key = key[2:-1]
 
 progress = tqdm.tqdm(range(size), f"Receiving {name}", unit="B", unit_scale=True, unit_divisor=1024)
 with open(name, "wb") as f:
