@@ -9,7 +9,7 @@ if os.geteuid() != 0:
 try:
     import tqdm
 except:
-    if 'error' in sp.check_output(['pip3','install','tdqm'])
+    if 'error' in sp.check_output(['pip3','install','tdqm']):
     #if error add flag to install pip3 after
     if ret != 0:
         print("There's been an error installing a necessary package for this client to work, attempting to update apt-get in 10 seconds...")
