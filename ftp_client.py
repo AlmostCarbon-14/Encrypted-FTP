@@ -16,7 +16,7 @@ class E_FTP_S:
         self.filename = input("Please Enter Filename:\n")
         self.buff_size = 4096
         self.seperator = "<SEPERATOR>"
-        self.e_file = FileCrypt()
+        self.e_file = FileCrypt(True)
         self.key = self.e_file.key()
         if not self.validate_file():
             print("No such file exists")

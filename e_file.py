@@ -9,9 +9,10 @@ import string
 import os
 
 class FileCrypt:
-    def __init__(self):
-        self.salt = self.__salt_gen()
-        self.__write_key(self.salt)
+    def __init__(self, is_new):
+        if is_new:
+            self.salt = self.__salt_gen()
+            self.__write_key(self.salt)
 
     def __salt_gen(self):
         password_characters = string.digits

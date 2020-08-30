@@ -36,5 +36,5 @@ with open(name, "wb") as f:
     client_socket.close()
     sock.close()
     f.close()
-e_file = FileCrypt(new=False)
+e_file = FileCrypt(False)
 e_file.decrypt_with_key(name, key)
