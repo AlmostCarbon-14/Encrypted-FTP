@@ -4,6 +4,7 @@ import tqdm
 import os
 import time
 import sys
+import subprocess as sp
 from e_file import FileCrypt
 
 
@@ -14,6 +15,14 @@ if "-p" in args: #this is for later if I feel like it
     PORT = port_scan()
 else:
     PORT = input("Please Enter a Port Number: \n")
+
+cmd = "ifconfig | grep 255.255.255.0"
+
+inet = sp.check_output(cmd, shell = True)
+inet = wlan.decode("utf-8")
+inet = wlan.split(" ")
+inet_addr = inet[inet.index("inet") + 1]
+print(inet_addr)
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
