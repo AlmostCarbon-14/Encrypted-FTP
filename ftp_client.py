@@ -51,8 +51,6 @@ class E_FTP_S:
         sock.connect((self.addr, self.port))
         try:
             sock.send(f"{self.key}{self.seperator}{self.filename}{self.seperator}{self.file_size}".encode())
-            print("Sending Key...", self.key)
-            print("Key Len: ", len(self.key))
         except:
             print("Failure to connect to host")
             self.finish()
