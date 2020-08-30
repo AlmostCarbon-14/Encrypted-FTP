@@ -4,13 +4,14 @@ import time
 import sys
 import subprocess as sp
 
+flag = False
 if os.geteuid() != 0:
     sys.exit("Please Make Sure You're a Superuser Before Running This Program")    
 try:
     import tqdm
 except:
     if 'error' in sp.check_output(['pip3','install','tdqm']):
-    #if error add flag to install pip3 after
+        flag = True
     if ret != 0:
         print("There's been an error installing a necessary package for this client to work, attempting to update apt-get in 10 seconds...")
         time.sleep(10)
