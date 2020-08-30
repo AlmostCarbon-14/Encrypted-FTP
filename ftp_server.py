@@ -10,14 +10,15 @@ from e_file import FileCrypt
 SEPERATOR = "<SEPERATOR>"
 BUFF_SIZE = 4096
 args = sys.argv
-if "-p" in args:
+if "-p" in args: #this is for later if I feel like it
     PORT = port_scan()
 else:
     PORT = input("Please Enter a Port Number: \n")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-sock.bind(('', int(PORT)))
+sock.bind((socket.gethostbyname(socket.gethostname()), int(PORT)))
+print(f"Listening at {socket.gethostbyname(socket.gethostname())} : {PORT}")
 sock.listen(5)
 
 client_socket, addr = sock.accept()
