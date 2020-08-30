@@ -35,3 +35,6 @@ with open(name, "wb") as f:
     print(f"{name} Has Finished Downloading and has been saved in this directory")
     client_socket.close()
     sock.close()
+    f.close()
+e_file = FileCrypt(new=False)
+e_file.decrypt_with_key(name, key)
