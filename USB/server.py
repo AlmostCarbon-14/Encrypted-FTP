@@ -5,7 +5,7 @@ import sys
 import os
 
 '''
--a Server Address
+-l File Location
 -p Server Port
 '''
 
@@ -13,7 +13,7 @@ args = {}
 for x in range(1, len(sys.argv), 2):
     args[sys.argv[x][1]] = sys.argv[x + 1]
 
-server = PFS.PrinterFileServer('0.0.0.0', args['p'])
+server = PFS.PrinterFileServer('0.0.0.0', args['p'], args['l'])
 
 server.run_server()
 
