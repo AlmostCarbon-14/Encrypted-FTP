@@ -22,6 +22,6 @@ else:
 while True:
     try:
         server.run_server()
-    except:
-        print("Exception Caught")
+    except Exception as e:
+        print(e)
 
