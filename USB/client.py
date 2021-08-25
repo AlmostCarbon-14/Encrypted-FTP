@@ -17,15 +17,13 @@ for x in range(1, len(sys.argv), 2):
 
 client = PFS.PrinterFileServer(args['a'], args['p'])
 
-
-
 if args['r'].upper() == 'T' or args['r'].upper() == 'TRUE':
     if os.path.isdir(args['f']):
         files = os.listdir(args['f'])
         for f in files:
             if not os.path.isdir(f):
-                print(f)
-                client_run_client(f)
+                print(args['f'] + f)
+                client.run_client(args['f'] + f)
     
 
 else:
