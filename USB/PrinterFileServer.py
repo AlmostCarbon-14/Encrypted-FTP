@@ -6,11 +6,6 @@ import tqdm
 import socket
 
 
-
-PORT = 1069
-ADDR = "0.0.0.0"
-
-
 class PrinterFileServer():
     def __init__(self, address, port, path=""):
         self.ADDR = address

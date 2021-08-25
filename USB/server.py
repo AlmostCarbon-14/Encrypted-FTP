@@ -9,12 +9,19 @@ import os
 -p Server Port
 '''
 
+ADDR = '0.0.0.0'
+
 args = {}
 for x in range(1, len(sys.argv), 2):
     args[sys.argv[x][1]] = sys.argv[x + 1]
 
-server = PFS.PrinterFileServer('0.0.0.0', args['p'], args['l'])
-
-server.run_server()
-
+if 'l' in args.keys():
+    server = PFS.PrinterFileServer(ADDR, args['p'], args['l'])
+else:
+    server = PFS.PrinterFileServer(ADDR, args['p'])
+while True:
+    try:
+        server.run_server()
+    except:
+        print("Exception Caught")
 
