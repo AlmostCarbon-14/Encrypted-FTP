@@ -1,6 +1,5 @@
 from tkinter import *
 import os
-import time
 from PrinterFileServer import *
 
 GREEN = "#4FFC1B"
@@ -51,10 +50,11 @@ class baseGUI:
         if self.isServer:
             self.FileRadio.configure(state=DISABLED)
             self.FolderRadio.configure(state=DISABLED)
-        self.__run(server) if self.isServer else self.__run(False)
+            self.selection = "Folder"
+        self.__run(server) if self.isServer else self.__run()
 
     def __FTPStart(self):
-        if self.selection.get() == '' and not self.isServer:
+        if self.selection.get() == '':
             self.__displayMessage("Need to select radio button", False)
             return
         elif self.IPAddr.get() == '':
@@ -66,15 +66,9 @@ class baseGUI:
         elif self.FilePath.get() == '':
             self.__displayMessage("Missing File Path", False)
             return
-        CommonFilePath = self.FilePath.get()
-        if CommonFilePath[-1] != '\\' or CommonFilePath[-1] != '/' and self.selection.get() != 'File':
-            if '\\' in CommonFilePath:
-                CommonFilePath += '\\'
-            else:
-                CommonFilePath += '/'
-
         if self.isServer:
-            self.PFS = PrinterFileServerWithGUI(str(self.IPAddr.get()), str(self.PortNum.get()), self.Output, str(CommonFilePath))
+            self.PFS = PrinterFileServerWithGUI(str(self.IPAddr.get()), str(self.PortNum.get()), self.Output,
+                                                str(self.FilePath.get()))
             while True:
                 try:
                     self.PFS.run_server()
@@ -82,37 +76,23 @@ class baseGUI:
                     self.__displayMessage(e, False)
         else:
             self.PFS = PrinterFileServerWithGUI(str(self.IPAddr.get()), str(self.PortNum.get()), self.Output)
-            toSend = {}
-            if self.selection.get() == 'File':
-                if os.path.isfile(CommonFilePath):
-                    toSend[CommonFilePath.strip()] = 0
+            if self.selection == 'File':
+                if os.path.isfile(self.FilePath.get()):
+                    self.PFS.run_client(self.FilePath.get().strip())
                 else:
                     self.__displayMessage("File was not found at given path", False)
             else:
-                if os.path.isdir(CommonFilePath):
-                    files = os.listdir(CommonFilePath)
+                if os.path.isdir(self.FilePath.get()):
+                    files = os.listdir(self.FilePath.get())
                     for f in files:
-                        if not os.path.isdir(CommonFilePath + f):
-                            toSend[CommonFilePath + f] = 0
+                        if not os.path.isdir(f):
+                            self.__displayMessage("Sending {}...".format(self.FilePath.get() + f))
+                            self.PFS.run_client(self.FilePath.get() + f)
                 else:
                     self.__displayMessage("Given path is not a directory", False)
 
-            for f in toSend.keys():
-                while toSend[f] <= 10:
-                    try:
-                        self.__displayMessage("Sending {}...".format(f))
-                        self.PFS.run_client(f)
-                        time.sleep(3)
-                        break
-                    except Exception as e:
-                        print("Attempt {} failed for file {} due to Exception {}...Will Try Again".format(toSend[f], f, e))
-                        toSend[f] += 1
-                        self.__displayMessage("Was unable to send {}".format(f))
-
     def __displayMessage(self, message, append=True):
-        print('\n' + message)
         if append:
-
             self.Output.insert(INSERT, '\n' + message)
         else:
             self.Output.delete("1.0", END)
@@ -143,3 +123,5 @@ class baseGUI:
     def __client_GUI(self):
         self.top.title("Client")
 
+
+gui = baseGUI()
