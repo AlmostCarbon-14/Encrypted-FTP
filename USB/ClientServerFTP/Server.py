@@ -72,7 +72,7 @@ class Server:
         if msg[1] == 'Hello':
             if msg[0] not in self.connections:
                 self.connections[msg[0]] = clientAddr
-                ttlThread = threading.Thread(target=self.__TTL(), args=(msg[0],))
+                ttlThread = threading.Thread(target=self.__TTL, args=(msg[0],))
                 ttlThread.start()
         elif msg[1] == 'Bye':
             self.connections.pop(msg[1])
