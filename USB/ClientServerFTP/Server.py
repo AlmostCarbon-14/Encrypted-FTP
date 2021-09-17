@@ -61,7 +61,7 @@ class Server:
         print(f"Server is listening at {self.ADDR} : {self.PORT}")
         while True:
             cl_sock, cl_addr = sock.accept()
-            thread = threading.Thread(target=self.__ConnectionThread, args=cl_sock)
+            thread = threading.Thread(target=self.__ConnectionThread, args=(cl_sock,))
             thread.start()
 
 
