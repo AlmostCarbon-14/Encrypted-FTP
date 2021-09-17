@@ -48,6 +48,9 @@ class Server:
         print(msg)
         if msg[0] == 'Hello':
             self.connections[msg[1]] = clientSock
+        elif msg[0] == 'Bye':
+            self.connections.pop(msg[1])
+        print(self.connections)
 
 
 
