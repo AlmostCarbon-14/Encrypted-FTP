@@ -2,7 +2,7 @@
 
 import os
 from tkinter import *
-#import tqdm
+# import tqdm
 import socket
 
 
@@ -10,7 +10,7 @@ class PrinterFileServerWithGUI:
     def __init__(self, address, port, textFrame, path=""):
         self.ADDR = address
         self.PORT = int(port)
-        self.SEPERATOR = "<BREAK>"
+
         self.BUFFER_SIZE = 4096
         self.textArea = textFrame
         if path == "":
@@ -72,9 +72,6 @@ class PrinterFileServerWithGUI:
             self.textArea.insert(INSERT, message)
 
 
-
-
-
 class PrinterFileServer():
     def __init__(self, address, port, path=""):
         self.ADDR = address
@@ -95,18 +92,17 @@ class PrinterFileServer():
             sock = socket.socket()
             sock.connect((self.ADDR, self.PORT))
             sock.send("{} {} {}".format(filename, self.SEPERATOR, filesize).encode())
-#           progress = tqdm.tqdm(range(filesize), "Sending {}".format(filename), unit="B", unit_scale=True, unit_divisor=1024)
+            # progress = tqdm.tqdm(range(filesize), "Sending {}".format(filename), unit="B", unit_scale=True, unit_divisor=1024)
             with open(filename, "rb") as f:
                 while True:
                     bytes_read = f.read(self.BUFFER_SIZE)
                     if not bytes_read:
                         break
                     sock.sendall(bytes_read)
-#                   progress.update(len(bytes_read))
+            #                   progress.update(len(bytes_read))
             sock.close()
         else:
             print("file was not found")
-
 
     def run_server(self):
         sock = socket.socket()
@@ -122,14 +118,13 @@ class PrinterFileServer():
             filename = os.path.basename(filename)
             filesize = int(filesize)
 
-#            progress = tqdm.tqdm(range(filesize), "Receiving {}".format(filename), unit="B", unit_scale = True, unit_divisor = 1024)
-            with open (self.PATH + "/" + filename.strip(), "wb") as f:
+            #            progress = tqdm.tqdm(range(filesize), "Receiving {}".format(filename), unit="B", unit_scale = True, unit_divisor = 1024)
+            with open(self.PATH + "/" + filename.strip(), "wb") as f:
                 while True:
                     bytes_read = cl_sock.recv(self.BUFFER_SIZE)
                     if not bytes_read:
                         break
                     f.write(bytes_read)
-#                    progress.update(len(bytes_read))
+            #                    progress.update(len(bytes_read))
             cl_sock.close()
             sock.close()
-

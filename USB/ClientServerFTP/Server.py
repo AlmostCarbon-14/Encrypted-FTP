@@ -2,22 +2,23 @@
 
 import threading
 import time
+import random
 import socket
 
 '''
 PACKET STRUCTURE
 
 BEGIN CONNECTION
-"Hello"<BREAK>
+"Hello"<BREAK>{NAME}<BREAK>
 
 END CONNECTION
-"Bye"<BREAK>
+"Bye"<BREAK>{NAME}<BREAK>
 
 TTL SYN
 "RUTHERE?"<BREAK>
 
 TTL ACK
-"YAIM"<BREAK>
+"YAIAM"<BREAK>
 
 
 '''
@@ -42,10 +43,13 @@ class Server:
         self.ADDR = Address
         self.PORT = int(Port)
 
-    def __ConnectionThread(self, clientSock, clientAddr):
-        print(clientSock)
-        print(clientAddr)
-        # msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
+    def __ConnectionThread(self, clientSock):
+        msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
+        print(msg)
+        if msg[0] == 'Hello':
+            self.connections[msg[1]] = clientSock
+
+
 
     def run(self):
         sock = socket.socket()
@@ -54,8 +58,8 @@ class Server:
         print(f"Server is listening at {self.ADDR} : {self.PORT}")
         while True:
             cl_sock, cl_addr = sock.accept()
-            self.__ConnectionThread(cl_sock, cl_addr)
+            self.__ConnectionThread(cl_sock)
 
 
-server = Server("0.0.0.0", '5555')
+server = Server("0.0.0.0", random.randint(1000, 65000))
 server.run()
