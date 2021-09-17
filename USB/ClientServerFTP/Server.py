@@ -9,31 +9,30 @@ import socket
 PACKET STRUCTURE
 
 BEGIN CONNECTION
-"Hello"<BREAK>{NAME}<BREAK>
+{NAME}<BREAK>"Hello"<BREAK>
 
 END CONNECTION
-"Bye"<BREAK>{NAME}<BREAK>
+{NAME}<BREAK>"Bye"<BREAK>
 
 TTL SYN
 "RUTHERE?"<BREAK>
 
 TTL ACK
-"YAIAM"<BREAK>
+{NAME}<BREAK>"YAIAM"<BREAK>
 
 BUSY
 "YES/NO<BREAK>"
 
+SEND REQUEST
+{NAME}<BREAK>"SENDREQ"<BREAK>
 '''
 
 
-class User:
-
-    def __init__(self, Address, Port):
-        self.ADDR = Address
-        self.PORT = Port
-
-    def __str__(self):
-        return f"{self.Name} is at {self.ADDR} : {self.PORT}"
+def sendStr(self, args):
+    ret = ''
+    for arg in args:
+        ret += arg + '<BREAK>'
+    return ret
 
 
 class Server:
@@ -44,16 +43,42 @@ class Server:
         self.SEPERATOR = "<BREAK>"
         self.ADDR = Address
         self.PORT = int(Port)
+        self.TTL = 1800
 
-    def __ConnectionThread(self, clientSock):
+    def __TTL(self, name):
         while True:
-            msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
+            time.sleep(self.TTL)
+            addr = self.connections['name']
+            clientSock = socket.socket()
+            clientSock.connect(addr)
+            try:
+                clientSock.send(sendStr("RUTHERE?"))
+                msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
+                if msg[0] == "YAIAM":
+                    pass
+                clientSock.close()
+            except socket.timeout:
+                try:
+                    self.connections.pop(name)
+                except:
+                    pass
+            finally:
+                clientSock.close()
+                break
 
-            if msg[0] == 'Hello':
-                self.connections[msg[1]] = clientSock
-            elif msg[0] == 'Bye':
-                self.connections.pop(msg[1])
-            print(self.connections)
+    def __ConnectionThread(self, clientSock, clientAddr):
+        msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
+        if msg[1] == 'Hello':
+            if msg[0] not in self.connections:
+                self.connections[msg[0]] = clientAddr
+                ttlThread = threading.Thread(target=self.__TTL(), args=(msg[0],))
+                ttlThread.start()
+        elif msg[1] == 'Bye':
+            self.connections.pop(msg[1])
+        elif msg[1] == 'ListUsers':
+            print(f"Sending: {sendStr(self.connections.keys())}")
+            clientSock.send(sendStr(self.connections.keys()))
+        clientSock.close()
 
     def run(self):
         sock = socket.socket()
@@ -62,7 +87,8 @@ class Server:
         print(f"Server is listening at {self.ADDR} : {self.PORT}")
         while True:
             cl_sock, cl_addr = sock.accept()
-            thread = threading.Thread(target=self.__ConnectionThread, args=(cl_sock,))
+            print(f"Host has connected to: {cl_addr[0]} : {cl_addr[1]}")
+            thread = threading.Thread(target=self.__ConnectionThread, args=(cl_sock, cl_addr))
             thread.start()
 
 
