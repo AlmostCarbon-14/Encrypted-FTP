@@ -20,6 +20,8 @@ TTL SYN
 TTL ACK
 "YAIAM"<BREAK>
 
+BUSY
+"YES/NO<BREAK>"
 
 '''
 
@@ -52,8 +54,6 @@ class Server:
             self.connections.pop(msg[1])
         print(self.connections)
 
-
-
     def run(self):
         sock = socket.socket()
         sock.bind((self.ADDR, self.PORT))
@@ -61,7 +61,8 @@ class Server:
         print(f"Server is listening at {self.ADDR} : {self.PORT}")
         while True:
             cl_sock, cl_addr = sock.accept()
-            self.__ConnectionThread(cl_sock)
+            thread = threading.Thread(target=self.__ConnectionThread, args=cl_sock)
+            thread.start()
 
 
 server = Server("0.0.0.0", random.randint(1000, 65000))
