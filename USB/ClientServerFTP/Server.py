@@ -68,6 +68,7 @@ class Server:
 
     def __ConnectionThread(self, clientSock, clientAddr):
         msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
+        print(msg)
         if msg[1] == 'Hello':
             if msg[0] not in self.connections:
                 self.connections[msg[0]] = clientAddr
