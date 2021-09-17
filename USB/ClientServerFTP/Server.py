@@ -46,13 +46,14 @@ class Server:
         self.PORT = int(Port)
 
     def __ConnectionThread(self, clientSock):
-        msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
-        print(msg)
-        if msg[0] == 'Hello':
-            self.connections[msg[1]] = clientSock
-        elif msg[0] == 'Bye':
-            self.connections.pop(msg[1])
-        print(self.connections)
+        while True:
+            msg = clientSock.recv(self.BUFFER_SIZE).decode().split(self.SEPERATOR)
+
+            if msg[0] == 'Hello':
+                self.connections[msg[1]] = clientSock
+            elif msg[0] == 'Bye':
+                self.connections.pop(msg[1])
+            print(self.connections)
 
     def run(self):
         sock = socket.socket()
