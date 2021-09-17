@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import threading
 import time
 import socket
@@ -49,7 +51,7 @@ class Server:
         sock = socket.socket()
         sock.bind((self.ADDR, self.PORT))
         sock.listen(5)
-
+        print(f"Server is listening at {self.ADDR} : {self.PORT}")
         while True:
             cl_sock, cl_addr = sock.accept()
             self.__ConnectionThread(cl_sock, cl_addr)
